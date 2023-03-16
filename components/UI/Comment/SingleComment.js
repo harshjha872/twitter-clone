@@ -58,7 +58,7 @@ const SingleComment = (props) => {
           email: session.user.email,
         }
       );
-      if (response.statusText === "OK") {
+      if (response.data.message === "Successful") {
         setLikeButton(true);
         setLikeCount(likeCount + 1);
       }
@@ -74,7 +74,7 @@ const SingleComment = (props) => {
           email: session.user.email,
         }
       );
-      if (response.statusText === "OK") {
+      if (response.data.message === "Successful") {
         setLikeButton(false);
         setLikeCount(likeCount - 1);
       }

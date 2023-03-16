@@ -27,7 +27,7 @@ const Modal = (props) => {
       }
     );
 
-    if (response.statusText === "OK") {
+    if (response.data.message === "Successful") {
       props.removeModal();
       Router.push(`/tweet/${props.details._id}`);
     }

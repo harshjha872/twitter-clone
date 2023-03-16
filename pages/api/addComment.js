@@ -33,7 +33,7 @@ const addComment = async (req, res) => {
 
     await tweetIndb.save();
 
-    res.json({ message: "successfully added comment" });
+    res.json({ message: "Successful" });
   } else {
     return res.status(405).json({ message: "Invalid req type" });
   }
