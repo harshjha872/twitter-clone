@@ -1,1 +1,1 @@
-console.log("redux");
+console.log("redux store");
