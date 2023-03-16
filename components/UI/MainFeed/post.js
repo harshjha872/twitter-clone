@@ -9,7 +9,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
 import Modal from "../Modal/Modal";
-import getuser from "@/helpers/getUser";
 
 const Post = (props) => {
   const { data: session } = useSession();
@@ -17,7 +16,9 @@ const Post = (props) => {
   const [likeCount, setLikeCount] = useState(props.likes.length);
   useEffect(() => {
     const run = async () => {
-      let user = await getuser(session.user.email);
+      const user = await axios.post(`${process.env.NEXTAUTH_URL}/api/getuser`, {
+        email: session.user.email,
+      });
       if (
         user.bookmarks.length > 0 &&
         session &&

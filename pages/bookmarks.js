@@ -10,12 +10,17 @@ import PhoneSidebar from "@/components/UI/SideBar/PhoneSidebar";
 import { useEffect } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import Router from "next/router";
 
 export default function Bookmark() {
   const { data: session } = useSession();
+
   const [content, setContent] = useState([]);
 
   useEffect(() => {
+    if (!session) {
+      Router.push("/auth/signin");
+    }
     let temp = [];
     const getAllbookmarks = async () => {
       const allbookmarks = await axios.post(
@@ -42,7 +47,7 @@ export default function Bookmark() {
       setContent([...temp]);
     };
     getAllbookmarks();
-  }, [session.user.email]);
+  }, [session]);
 
   const [Hamishidden, setHamIsHidden] = useState(false);
   let HamClass = `min-[500px]:hidden z-20 ease-in-out transition duration-200 bg-neutral-900 flex space-y-2 flex-col h-screen w-20 w-72 fixed left-0 top-0 border-r-2 border-neutral-900 items-center items-start py-4 ${

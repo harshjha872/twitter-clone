@@ -12,7 +12,6 @@ import { useSession } from "next-auth/react";
 import Router from "next/router";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import getuser from "@/helpers/getUser";
 import Modal from "../Modal/Modal";
 
 const SingleTweet = (props) => {
@@ -31,7 +30,9 @@ const SingleTweet = (props) => {
 
   useEffect(() => {
     const run = async () => {
-      let user = await getuser(session.user.email);
+      const user = await axios.post(`${process.env.NEXTAUTH_URL}/api/getuser`, {
+        email: session.user.email,
+      });
       if (user.tweets.find((ele) => ele === props._id)) {
         setDelete(true);
       }
