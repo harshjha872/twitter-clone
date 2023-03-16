@@ -16,14 +16,15 @@ const Post = (props) => {
   const [likeCount, setLikeCount] = useState(props.likes.length);
   useEffect(() => {
     const run = async () => {
-      const user = await axios.post(
+      const userData = await axios.post(
         `${process.env.NEXT_PUBLIC_HOST}/api/getuser`,
         {
           email: session.user.email,
         }
       );
+      const { data: user } = userData;
       if (
-        user.bookmarks.length > 0 &&
+        user.bookmarks?.length > 0 &&
         session &&
         user.bookmarks.find((ele) => ele === props._id)
       ) {
