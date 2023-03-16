@@ -42,7 +42,7 @@ export default function Bookmark() {
       setContent([...temp]);
     };
     getAllbookmarks();
-  }, []);
+  }, [session.user.email]);
 
   const [Hamishidden, setHamIsHidden] = useState(false);
   let HamClass = `min-[500px]:hidden z-20 ease-in-out transition duration-200 bg-neutral-900 flex space-y-2 flex-col h-screen w-20 w-72 fixed left-0 top-0 border-r-2 border-neutral-900 items-center items-start py-4 ${
