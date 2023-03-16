@@ -135,6 +135,7 @@ const Post = (props) => {
           email: session.user.email,
         }
       );
+      console.log(response);
       if (response.statusText === "OK") {
         setLikeButton(false);
         setLikeCount(likeCount - 1);
