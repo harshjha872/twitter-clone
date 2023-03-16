@@ -3,65 +3,53 @@ import { BsTwitter } from "react-icons/bs";
 import { useState } from "react";
 import Post from "@/components/UI/MainFeed/post";
 import Sidebar from "@/components/UI/SideBar/sidebar";
-import ComposeTweet from "@/components/UI/CreateTweet/compose";
 import Sidefeed from "@/components/UI/SideFeed/Sidefeed";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Overlay from "@/components/UI/SideBar/Overlay";
 import PhoneSidebar from "@/components/UI/SideBar/PhoneSidebar";
 import { useEffect } from "react";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 
-export default function Home() {
+export default function Bookmark() {
+  const { data: session } = useSession();
   const [content, setContent] = useState([]);
 
   useEffect(() => {
     let temp = [];
-    const findAllTweets = async () => {
-      const alltweets = await axios.get("http://localhost:3000/api/feed");
-      for (let i = alltweets.data.length - 1; i >= 0; i--) {
+    const getAllbookmarks = async () => {
+      const allbookmarks = await axios.post(
+        "http://localhost:3000/api/getbookmarks",
+        {
+          email: session.user.email,
+        }
+      );
+
+      for (let i = allbookmarks.data.length - 1; i >= 0; i--) {
         temp.push(
           <Post
-            _id={alltweets.data[i]._id}
-            name={alltweets.data[i].name}
-            likes={alltweets.data[i].likes}
-            comments={alltweets.data[i].comments.length}
-            content={alltweets.data[i].tweet}
-            username={alltweets.data[i].email.split("@")[0]}
-            time={alltweets.data[i].createdAt}
+            _id={allbookmarks.data[i]._id}
+            name={allbookmarks.data[i].name}
+            likes={allbookmarks.data[i].likes}
+            comments={allbookmarks.data[i].comments.length}
+            content={allbookmarks.data[i].tweet}
+            username={allbookmarks.data[i].email.split("@")[0]}
+            time={allbookmarks.data[i].createdAt}
             isComment={false}
           />
         );
       }
       setContent([...temp]);
     };
-    findAllTweets();
+    getAllbookmarks();
   }, []);
 
-  const [active, setActiveState] = useState(true);
   const [Hamishidden, setHamIsHidden] = useState(false);
   let HamClass = `min-[500px]:hidden z-20 ease-in-out transition duration-200 bg-neutral-900 flex space-y-2 flex-col h-screen w-20 w-72 fixed left-0 top-0 border-r-2 border-neutral-900 items-center items-start py-4 ${
     Hamishidden ? "translate-x-0" : "-translate-x-72"
   }`;
   const HamClickHandler = () => {
     setHamIsHidden(!Hamishidden);
-  };
-  const NavigationClass = `w-1/2 text-center p-4 ${
-    active ? "bg-[#121212]" : ""
-  }`;
-  const Bottomborder = `font-semibold py-3 ${
-    active ? "border-b-4 border-sky-500" : ""
-  }`;
-  const NavigationClass2 = `w-1/2 text-center p-4 ${
-    active ? "" : "bg-[#121212]"
-  }`;
-  const Bottomborder2 = `font-semibold py-3 ${
-    active ? "" : "border-b-4 border-sky-500"
-  }`;
-  const activeOn = () => {
-    setActiveState(true);
-  };
-  const activeOff = () => {
-    setActiveState(false);
   };
 
   return (
@@ -77,9 +65,9 @@ export default function Home() {
         <Sidebar />
         <PhoneSidebar classes={HamClass} />
         {Hamishidden && <Overlay onClickHandler={HamClickHandler} />}
-        <div className="min-h-[100vh] grow lg:min-w-[625px] max-w-[625px] flex flex-col min-[500px]:ml-20 xl:ml-80 border-r-2 border-neutral-900 ">
-          <div className="min-[500px]:block hidden px-4 py-2 font-bold">
-            Home
+        <div className="grow lg:min-w-[625px] max-w-[625px] flex flex-col min-[500px]:ml-20 xl:ml-80 border-r-2 border-neutral-900 ">
+          <div className="min-[500px]:block hidden px-4 py-12 border-b-2 border-neutral-900 font-bold">
+            Bookmarks
           </div>
           <div
             onClick={HamClickHandler}
@@ -94,15 +82,6 @@ export default function Home() {
           >
             <BsTwitter size={24} />
           </div>
-          <div className="flex w-full border-b-2 border-neutral-900 mt-[70px] min-[500px]:mt-0">
-            <a onClick={activeOn} className={NavigationClass}>
-              <span className={Bottomborder}>For you</span>
-            </a>
-            <a onClick={activeOff} className={NavigationClass2}>
-              <span className={Bottomborder2}>Followings</span>
-            </a>
-          </div>
-          <ComposeTweet />
           {content}
         </div>
         <Sidefeed />
@@ -110,15 +89,3 @@ export default function Home() {
     </>
   );
 }
-
-// export async function getServerSideProps(context) {
-//   const result = await fetch(
-//     "https://saurav.tech/NewsAPI/top-headlines/category/health/in.json"
-//   );
-//   console.log(result);
-//   return {
-//     props: {
-//       news: result,
-//     }, // will be passed to the page component as props
-//   };
-// }
