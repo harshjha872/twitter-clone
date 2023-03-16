@@ -24,9 +24,12 @@ export default function Home() {
     let temp = [];
     let commentsArr = [];
     const findTweet = async () => {
-      const tweet = await axios.post("http://localhost:3000/api/gettweet", {
-        _id: slug,
-      });
+      const tweet = await axios.post(
+        `${process.env.NEXTAUTH_URL}/api/gettweet`,
+        {
+          _id: slug,
+        }
+      );
       temp.push(
         <SingleTweet
           _id={tweet.data[0]._id}

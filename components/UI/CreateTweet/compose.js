@@ -22,10 +22,13 @@ const ComposeTweet = () => {
     }
     setTweet("");
     if (status === "authenticated") {
-      const response = await axios.post("http://localhost:3000/api/addtweet", {
-        tweet: tweet,
-        email: session.user.email,
-      });
+      const response = await axios.post(
+        `${process.env.NEXTAUTH_URL}/api/addtweet`,
+        {
+          tweet: tweet,
+          email: session.user.email,
+        }
+      );
       console.log(response);
     } else {
       Router.push("/auth/signin");

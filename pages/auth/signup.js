@@ -24,11 +24,14 @@ const Signup = (props) => {
     setName("");
     setEmail("");
     setPassword("");
-    const data = await axios.post(`http://localhost:3000/api/auth/signup`, {
-      name: name,
-      Email: Email,
-      password: password,
-    });
+    const data = await axios.post(
+      `${process.env.NEXTAUTH_URL}/api/auth/signup`,
+      {
+        name: name,
+        Email: Email,
+        password: password,
+      }
+    );
 
     // const data = await response.json();
 

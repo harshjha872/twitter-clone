@@ -16,13 +16,16 @@ const Modal = (props) => {
 
   const addCommentHandler = async (e) => {
     e.preventDefault();
-    const response = await axios.post("http://localhost:3000/api/addComment", {
-      ...props.details,
-      userLoggedIn: {
-        user: session.user,
-      },
-      comment: comment,
-    });
+    const response = await axios.post(
+      `${process.env.NEXTAUTH_URL}/api/addComment`,
+      {
+        ...props.details,
+        userLoggedIn: {
+          user: session.user,
+        },
+        comment: comment,
+      }
+    );
 
     if (response.statusText === "OK") {
       props.removeModal();

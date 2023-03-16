@@ -21,9 +21,12 @@ const SingleComment = (props) => {
 
   useEffect(() => {
     const run = async () => {
-      const response = await axios.post("http://localhost:3000/api/getuser", {
-        email: session.user.email,
-      });
+      const response = await axios.post(
+        `${process.env.NEXTAUTH_URL}/api/getuser`,
+        {
+          email: session.user.email,
+        }
+      );
       if (response.data.email === props.comments.userEmail) setDelete(true);
     };
     if (session) run();
@@ -49,7 +52,7 @@ const SingleComment = (props) => {
   const addLikeToCommandHandler = async () => {
     if (CheckSigned()) {
       const response = await axios.post(
-        "http://localhost:3000/api/addLikeToComment",
+        `${process.env.NEXTAUTH_URL}/api/addLikeToComment`,
         {
           _id: props.comments._id,
           email: session.user.email,
@@ -65,7 +68,7 @@ const SingleComment = (props) => {
   const removeLikeFromCommentHandler = async () => {
     if (CheckSigned()) {
       const response = await axios.post(
-        "http://localhost:3000/api/removeLikeFromComment",
+        `${process.env.NEXTAUTH_URL}/api/removeLikeFromComment`,
         {
           _id: props.comments._id,
           email: session.user.email,
@@ -80,10 +83,13 @@ const SingleComment = (props) => {
 
   const deletecomment = async () => {
     if (CheckSigned()) {
-      const res = await axios.post("http://localhost:3000/api/deletecomment", {
-        tweetId: props.tweet,
-        _id: props.comments._id,
-      });
+      const res = await axios.post(
+        `${process.env.NEXTAUTH_URL}/api/deletecomment`,
+        {
+          tweetId: props.tweet,
+          _id: props.comments._id,
+        }
+      );
       if (res.statusText === "OK") {
         Router.push("/");
       }

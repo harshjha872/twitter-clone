@@ -84,7 +84,7 @@ const SingleTweet = (props) => {
   const addtobookmark = async () => {
     if (CheckSigned()) {
       const response = await axios.post(
-        "http://localhost:3000/api/addtobookmark",
+        `${process.env.NEXTAUTH_URL}/api/addtobookmark`,
         {
           _id: props._id,
           email: session.user.email,
@@ -97,7 +97,7 @@ const SingleTweet = (props) => {
   const removebookmark = async () => {
     if (CheckSigned()) {
       const response = await axios.post(
-        "http://localhost:3000/api/removebookmark",
+        `${process.env.NEXTAUTH_URL}/api/removebookmark`,
         {
           _id: props._id,
           email: session.user.email,
@@ -109,10 +109,13 @@ const SingleTweet = (props) => {
 
   const addToLikeHandler = async () => {
     if (CheckSigned()) {
-      const response = await axios.post("http://localhost:3000/api/addLike", {
-        _id: props._id,
-        email: session.user.email,
-      });
+      const response = await axios.post(
+        `${process.env.NEXTAUTH_URL}/api/addLike`,
+        {
+          _id: props._id,
+          email: session.user.email,
+        }
+      );
       if (response.statusText === "OK") setLikeButton(true);
     }
   };
@@ -120,7 +123,7 @@ const SingleTweet = (props) => {
   const removeLikeHandler = async () => {
     if (CheckSigned()) {
       const response = await axios.post(
-        "http://localhost:3000/api/removeLike",
+        `${process.env.NEXTAUTH_URL}/api/removeLike`,
         {
           _id: props._id,
           email: session.user.email,
@@ -132,10 +135,13 @@ const SingleTweet = (props) => {
 
   const deleteTweet = async () => {
     if (CheckSigned()) {
-      const res = await axios.post("http://localhost:3000/api/deletetweet", {
-        _id: props._id,
-        email: session.user.email,
-      });
+      const res = await axios.post(
+        `${process.env.NEXTAUTH_URL}/api/deletetweet`,
+        {
+          _id: props._id,
+          email: session.user.email,
+        }
+      );
       if (res.statusText === "OK") {
         Router.push("/");
       }

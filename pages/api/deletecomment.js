@@ -13,6 +13,7 @@ const deletecomment = async (req, res) => {
     if (!tweetId) return res.json({ message: "No tweet found" });
     if (!_id) return res.json({ message: "No id found" });
 
+    await mongoose.connect(process.env.MONGO_URI);
     const tweetIndb = await Tweet.findById(tweetId);
     const newArrOfComments = tweetIndb.comments.filter(
       (ele) => ele._id.toString() !== _id.toString()

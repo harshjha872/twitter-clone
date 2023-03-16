@@ -10,6 +10,7 @@ const addComment = async (req, res) => {
 
     if (!req.body._id) return res.json({ message: "No id found" });
 
+    await mongoose.connect(process.env.MONGO_URI);
     const tweetIndb = await Tweet.findById(
       mongoose.Types.ObjectId(req.body._id)
     );

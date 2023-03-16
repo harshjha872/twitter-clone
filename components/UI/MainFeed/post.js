@@ -81,10 +81,13 @@ const Post = (props) => {
 
   const addToLikeHandler = async () => {
     if (CheckSigned()) {
-      const response = await axios.post("http://localhost:3000/api/addLike", {
-        _id: props._id,
-        email: session.user.email,
-      });
+      const response = await axios.post(
+        `${process.env.NEXTAUTH_URL}/api/addLike`,
+        {
+          _id: props._id,
+          email: session.user.email,
+        }
+      );
       if (response.statusText === "OK") {
         setLikeButton(true);
         setLikeCount(likeCount + 1);
@@ -95,7 +98,7 @@ const Post = (props) => {
   const addtobookmark = async () => {
     if (CheckSigned()) {
       const response = await axios.post(
-        "http://localhost:3000/api/addtobookmark",
+        `${process.env.NEXTAUTH_URL}/api/addtobookmark`,
         {
           _id: props._id,
           email: session.user.email,
@@ -108,7 +111,7 @@ const Post = (props) => {
   const removebookmark = async () => {
     if (CheckSigned()) {
       const response = await axios.post(
-        "http://localhost:3000/api/removebookmark",
+        `${process.env.NEXTAUTH_URL}/api/removebookmark`,
         {
           _id: props._id,
           email: session.user.email,
@@ -121,7 +124,7 @@ const Post = (props) => {
   const removeLikeHandler = async () => {
     if (CheckSigned()) {
       const response = await axios.post(
-        "http://localhost:3000/api/removeLike",
+        `${process.env.NEXTAUTH_URL}/api/removeLike`,
         {
           _id: props._id,
           email: session.user.email,
