@@ -17,7 +17,9 @@ export default function Home() {
   useEffect(() => {
     let temp = [];
     const findAllTweets = async () => {
-      const alltweets = await axios.get(`${process.env.NEXTAUTH_URL}/api/feed`);
+      const alltweets = await axios.get(
+        `${process.env.NEXT_PUBLIC_HOST}/api/feed`
+      );
       for (let i = alltweets.data.length - 1; i >= 0; i--) {
         temp.push(
           <Post

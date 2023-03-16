@@ -24,7 +24,7 @@ export default function Bookmark() {
     let temp = [];
     const getAllbookmarks = async () => {
       const allbookmarks = await axios.post(
-        `${process.env.NEXTAUTH_URL}/api/getbookmarks`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/getbookmarks`,
         {
           email: session.user.email,
         }

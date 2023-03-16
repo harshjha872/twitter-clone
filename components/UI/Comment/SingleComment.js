@@ -22,7 +22,7 @@ const SingleComment = (props) => {
   useEffect(() => {
     const run = async () => {
       const response = await axios.post(
-        `${process.env.NEXTAUTH_URL}/api/getuser`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/getuser`,
         {
           email: session.user.email,
         }
@@ -52,7 +52,7 @@ const SingleComment = (props) => {
   const addLikeToCommandHandler = async () => {
     if (CheckSigned()) {
       const response = await axios.post(
-        `${process.env.NEXTAUTH_URL}/api/addLikeToComment`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/addLikeToComment`,
         {
           _id: props.comments._id,
           email: session.user.email,
@@ -68,7 +68,7 @@ const SingleComment = (props) => {
   const removeLikeFromCommentHandler = async () => {
     if (CheckSigned()) {
       const response = await axios.post(
-        `${process.env.NEXTAUTH_URL}/api/removeLikeFromComment`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/removeLikeFromComment`,
         {
           _id: props.comments._id,
           email: session.user.email,
@@ -84,7 +84,7 @@ const SingleComment = (props) => {
   const deletecomment = async () => {
     if (CheckSigned()) {
       const res = await axios.post(
-        `${process.env.NEXTAUTH_URL}/api/deletecomment`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/deletecomment`,
         {
           tweetId: props.tweet,
           _id: props.comments._id,

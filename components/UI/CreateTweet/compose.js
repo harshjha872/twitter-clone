@@ -23,7 +23,7 @@ const ComposeTweet = () => {
     setTweet("");
     if (status === "authenticated") {
       const response = await axios.post(
-        `${process.env.NEXTAUTH_URL}/api/addtweet`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/addtweet`,
         {
           tweet: tweet,
           email: session.user.email,

@@ -30,9 +30,12 @@ const SingleTweet = (props) => {
 
   useEffect(() => {
     const run = async () => {
-      const user = await axios.post(`${process.env.NEXTAUTH_URL}/api/getuser`, {
-        email: session.user.email,
-      });
+      const user = await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST}/api/getuser`,
+        {
+          email: session.user.email,
+        }
+      );
       if (user.tweets.find((ele) => ele === props._id)) {
         setDelete(true);
       }
@@ -85,7 +88,7 @@ const SingleTweet = (props) => {
   const addtobookmark = async () => {
     if (CheckSigned()) {
       const response = await axios.post(
-        `${process.env.NEXTAUTH_URL}/api/addtobookmark`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/addtobookmark`,
         {
           _id: props._id,
           email: session.user.email,
@@ -98,7 +101,7 @@ const SingleTweet = (props) => {
   const removebookmark = async () => {
     if (CheckSigned()) {
       const response = await axios.post(
-        `${process.env.NEXTAUTH_URL}/api/removebookmark`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/removebookmark`,
         {
           _id: props._id,
           email: session.user.email,
@@ -111,7 +114,7 @@ const SingleTweet = (props) => {
   const addToLikeHandler = async () => {
     if (CheckSigned()) {
       const response = await axios.post(
-        `${process.env.NEXTAUTH_URL}/api/addLike`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/addLike`,
         {
           _id: props._id,
           email: session.user.email,
@@ -124,7 +127,7 @@ const SingleTweet = (props) => {
   const removeLikeHandler = async () => {
     if (CheckSigned()) {
       const response = await axios.post(
-        `${process.env.NEXTAUTH_URL}/api/removeLike`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/removeLike`,
         {
           _id: props._id,
           email: session.user.email,
@@ -137,7 +140,7 @@ const SingleTweet = (props) => {
   const deleteTweet = async () => {
     if (CheckSigned()) {
       const res = await axios.post(
-        `${process.env.NEXTAUTH_URL}/api/deletetweet`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/deletetweet`,
         {
           _id: props._id,
           email: session.user.email,

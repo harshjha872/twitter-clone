@@ -25,7 +25,7 @@ const Signup = (props) => {
     setEmail("");
     setPassword("");
     const data = await axios.post(
-      `${process.env.NEXTAUTH_URL}/api/auth/signup`,
+      `${process.env.NEXT_PUBLIC_HOST}/api/auth/signup`,
       {
         name: name,
         Email: Email,

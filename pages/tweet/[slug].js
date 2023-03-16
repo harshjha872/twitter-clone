@@ -25,7 +25,7 @@ export default function Home() {
     let commentsArr = [];
     const findTweet = async () => {
       const tweet = await axios.post(
-        `${process.env.NEXTAUTH_URL}/api/gettweet`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/gettweet`,
         {
           _id: slug,
         }

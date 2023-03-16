@@ -16,9 +16,12 @@ const Post = (props) => {
   const [likeCount, setLikeCount] = useState(props.likes.length);
   useEffect(() => {
     const run = async () => {
-      const user = await axios.post(`${process.env.NEXTAUTH_URL}/api/getuser`, {
-        email: session.user.email,
-      });
+      const user = await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST}/api/getuser`,
+        {
+          email: session.user.email,
+        }
+      );
       if (
         user.bookmarks.length > 0 &&
         session &&
@@ -83,7 +86,7 @@ const Post = (props) => {
   const addToLikeHandler = async () => {
     if (CheckSigned()) {
       const response = await axios.post(
-        `${process.env.NEXTAUTH_URL}/api/addLike`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/addLike`,
         {
           _id: props._id,
           email: session.user.email,
@@ -99,7 +102,7 @@ const Post = (props) => {
   const addtobookmark = async () => {
     if (CheckSigned()) {
       const response = await axios.post(
-        `${process.env.NEXTAUTH_URL}/api/addtobookmark`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/addtobookmark`,
         {
           _id: props._id,
           email: session.user.email,
@@ -112,7 +115,7 @@ const Post = (props) => {
   const removebookmark = async () => {
     if (CheckSigned()) {
       const response = await axios.post(
-        `${process.env.NEXTAUTH_URL}/api/removebookmark`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/removebookmark`,
         {
           _id: props._id,
           email: session.user.email,
@@ -125,7 +128,7 @@ const Post = (props) => {
   const removeLikeHandler = async () => {
     if (CheckSigned()) {
       const response = await axios.post(
-        `${process.env.NEXTAUTH_URL}/api/removeLike`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/removeLike`,
         {
           _id: props._id,
           email: session.user.email,

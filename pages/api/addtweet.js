@@ -21,7 +21,7 @@ const addtweet = async (req, res) => {
         user: user._id,
         postedTime: new Date().toDateString().slice(0, 10),
         content: tweet,
-        shareLink: `${process.env.NEXTAUTH_URL}/onepost`,
+        shareLink: `${process.env.NEXT_PUBLIC_HOST}/onepost`,
       });
 
       await newtweet.save();

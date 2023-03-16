@@ -17,7 +17,7 @@ const Modal = (props) => {
   const addCommentHandler = async (e) => {
     e.preventDefault();
     const response = await axios.post(
-      `${process.env.NEXTAUTH_URL}/api/addComment`,
+      `${process.env.NEXT_PUBLIC_HOST}/api/addComment`,
       {
         ...props.details,
         userLoggedIn: {
