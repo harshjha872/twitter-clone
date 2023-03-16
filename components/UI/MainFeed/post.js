@@ -93,7 +93,7 @@ const Post = (props) => {
           email: session.user.email,
         }
       );
-      if (response.statusText === "OK") {
+      if (response.data.message === "Successful") {
         setLikeButton(true);
         setLikeCount(likeCount + 1);
       }
@@ -109,7 +109,7 @@ const Post = (props) => {
           email: session.user.email,
         }
       );
-      if (response.statusText === "OK") setBookMark(true);
+      if (response.data.message === "Successful") setBookMark(true);
     }
   };
 
@@ -122,7 +122,7 @@ const Post = (props) => {
           email: session.user.email,
         }
       );
-      if (response.statusText === "OK") setBookMark(false);
+      if (response.data.message === "Successful") setBookMark(false);
     }
   };
 
@@ -135,8 +135,7 @@ const Post = (props) => {
           email: session.user.email,
         }
       );
-      console.log(response);
-      if (response.statusText === "OK") {
+      if (response.data.message === "Successful") {
         setLikeButton(false);
         setLikeCount(likeCount - 1);
       }

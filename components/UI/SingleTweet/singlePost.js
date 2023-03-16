@@ -95,7 +95,7 @@ const SingleTweet = (props) => {
           email: session.user.email,
         }
       );
-      if (response.statusText === "OK") setBookMark(true);
+      if (response.data.message === "Successful") setBookMark(true);
     }
   };
 
@@ -108,7 +108,7 @@ const SingleTweet = (props) => {
           email: session.user.email,
         }
       );
-      if (response.statusText === "OK") setBookMark(false);
+      if (response.data.message === "Successful") setBookMark(false);
     }
   };
 
@@ -121,7 +121,7 @@ const SingleTweet = (props) => {
           email: session.user.email,
         }
       );
-      if (response.statusText === "OK") setLikeButton(true);
+      if (response.data.message === "Successful") setLikeButton(true);
     }
   };
 
@@ -134,7 +134,7 @@ const SingleTweet = (props) => {
           email: session.user.email,
         }
       );
-      if (response.statusText === "OK") setLikeButton(false);
+      if (response.data.message === "Successful") setLikeButton(false);
     }
   };
 
