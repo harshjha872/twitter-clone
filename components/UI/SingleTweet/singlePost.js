@@ -13,12 +13,17 @@ import Router from "next/router";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "../Modal/Modal";
+import { tweetActions } from "@/store/tweetSlice";
+import { useDispatch } from "react-redux";
 
 const SingleTweet = (props) => {
+  const dispatch = useDispatch();
+  const base64String = btoa(String.fromCharCode(...new Uint8Array(props.image)));
   const { data: session } = useSession();
   const [bookMark, setBookMark] = useState(false);
   const [isDelete, setDelete] = useState(false);
   const [isModal, setModal] = useState(false);
+  const [likeCount, setLikeCount] = useState(props.likes.length);
 
   const addCommentHandler = () => {
     if (CheckSigned()) setModal(true);
@@ -114,6 +119,8 @@ const SingleTweet = (props) => {
 
   const addToLikeHandler = async () => {
     if (CheckSigned()) {
+      setLikeButton(true)
+      setLikeCount(likeCount + 1)
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_HOST}/api/addLike`,
         {
@@ -121,12 +128,19 @@ const SingleTweet = (props) => {
           email: session.user.email,
         }
       );
-      if (response.data.message === "Successful") setLikeButton(true);
+      if (response.data.message !== "Successful") { 
+        setLikeButton(false);
+        setLikeCount(likeCount - 1)
+      } else {
+        dispatch(tweetActions.addLike({ tweetId: props._id, email: session.user.email }))
+      }
     }
   };
 
   const removeLikeHandler = async () => {
     if (CheckSigned()) {
+      setLikeButton(false);
+      setLikeCount(likeCount - 1)
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_HOST}/api/removeLike`,
         {
@@ -134,7 +148,12 @@ const SingleTweet = (props) => {
           email: session.user.email,
         }
       );
-      if (response.data.message === "Successful") setLikeButton(false);
+      if (response.data.message !== "Successful") { 
+        setLikeButton(true);
+        setLikeCount(likeCount + 1)
+      } else {
+        dispatch(tweetActions.removeLike({ tweetId: props._id, email: session.user.email }))
+      }
     }
   };
 
@@ -171,7 +190,13 @@ const SingleTweet = (props) => {
           </div>
         </div>
         <div className="flex flex-col w-full">
-          <div className="px-2 py-3 text-lg font-semibold">{props.content}</div>
+          {props.content !== null && <div className="px-2 py-3 text-lg font-semibold">{props.content}</div>}
+          {props.image && <img style={{ 
+              maxWidth: '100%',
+              borderRadius: '15px',
+              border: '1px solid white',
+              margin: '15px 0px'
+         }} src={`data:image/png;base64,${base64String}`} alt=""/>}
           <span className="font-medium text-neutral-600 px-2 pb-2 border-b-2 border-neutral-900">
             1:40 PM · {month} {day}
           </span>
@@ -202,7 +227,7 @@ const SingleTweet = (props) => {
               )}
 
               <span className="px-1 text-neutral-500">
-                {props.likes.length}
+                {likeCount}
               </span>
             </div>
             {isDelete && (

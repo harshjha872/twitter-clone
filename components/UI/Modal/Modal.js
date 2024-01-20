@@ -5,8 +5,11 @@ import { useState } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import Router from "next/router";
+import { tweetActions } from "@/store/tweetSlice";
+import { useDispatch } from "react-redux";
 
 const Modal = (props) => {
+  const dispatch = useDispatch();
   const { data: session } = useSession();
   const [comment, setComment] = useState("");
 
@@ -29,7 +32,9 @@ const Modal = (props) => {
 
     if (response.data.message === "Successful") {
       props.removeModal();
-      Router.push(`/tweet/${props.details._id}`);
+      dispatch(tweetActions.addComment({ tweetId: props.details._id, comment: response.data.comment }))
+      if(Router.pathname !== '/tweet/[slug]')
+        Router.push(`/tweet/${props.details._id}`);
     }
   };
 

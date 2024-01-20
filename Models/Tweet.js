@@ -4,7 +4,7 @@ const TweetSchema = new mongoose.Schema(
   {
     user: { type: Schema.Types.ObjectId, ref: "User" },
     postedTime: { type: Date, required: true },
-    content: { type: String, required: true },
+    content: { type: String },
     likes: [
       {
         type: Schema.Types.ObjectId,
@@ -21,6 +21,11 @@ const TweetSchema = new mongoose.Schema(
       },
     ],
     shareLink: { type: String, required: true },
+    image:
+    {
+        data: Buffer,
+        contentType: String,
+    }
   },
   { timestamps: true }
 );

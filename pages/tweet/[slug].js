@@ -11,13 +11,17 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import SingleTweet from "../../components/UI/SingleTweet/singlePost";
 import SingleComment from "@/components/UI/Comment/SingleComment";
+import { useSelector } from "react-redux";
 
 export default function Home() {
   const [content, setContent] = useState([]);
-  const [comData, setConData] = useState([]);
-
+  const [comData, setComData] = useState([]);
+  
   const router = useRouter();
   const { slug } = router.query;
+  const currentTweet = useSelector(state => state.tweetsSlice.tweets.find(tweet => tweet._id === slug));
+  
+  console.log("currentTweet", currentTweet);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -30,6 +34,10 @@ export default function Home() {
           _id: slug,
         }
       );
+      let imageBuffer;
+      if(Object.keys(tweet.data[0].image).length !== 0) {
+        imageBuffer = tweet.data[0].image.data.data
+      }
       temp.push(
         <SingleTweet
           _id={tweet.data[0]._id}
@@ -40,6 +48,7 @@ export default function Home() {
           username={tweet.data[0].email.split("@")[0]}
           email={tweet.data[0].email}
           time={tweet.data[0].createdAt}
+          image={imageBuffer}
         />
       );
 
@@ -49,11 +58,32 @@ export default function Home() {
         );
       }
 
-      setConData([...commentsArr]);
+      setComData([...commentsArr]);
       setContent([...temp]);
     };
-    findTweet();
-  }, [slug, router.isReady]);
+
+    if(!currentTweet) findTweet();
+    else {
+      let commentsArr = [];
+      setContent(<SingleTweet
+        _id={currentTweet._id}
+        name={currentTweet.name}
+        likes={currentTweet.likes}
+        comments={currentTweet.comments}
+        content={currentTweet.tweet}
+        username={currentTweet.email.split("@")[0]}
+        email={currentTweet.email}
+        time={currentTweet.createdAt}
+        image={currentTweet.image.data}
+      />)
+      for (let i = 0; i < currentTweet.comments.length; i++) {
+        commentsArr.push(
+          <SingleComment comments={currentTweet.comments[i]} tweet={slug} />
+        );
+      }
+      setComData([...commentsArr]);
+    }
+  }, [slug, router.isReady, currentTweet]);
 
   const [active, setActiveState] = useState(true);
   const [Hamishidden, setHamIsHidden] = useState(false);

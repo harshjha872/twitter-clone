@@ -24,6 +24,7 @@ const feed = async (req, res) => {
       shareLink: data[i].shareLink,
       comments: data[i].comments,
       _id: data[i]._id,
+      image: data[i].image
     };
     responseData.push(Tweetinfo);
   }

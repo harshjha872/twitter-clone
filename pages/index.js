@@ -10,34 +10,44 @@ import Overlay from "@/components/UI/SideBar/Overlay";
 import PhoneSidebar from "@/components/UI/SideBar/PhoneSidebar";
 import { useEffect } from "react";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import {getAllTweets} from "../store/tweetSlice";
 
 export default function Home() {
   const [content, setContent] = useState([]);
-
+  const dispatch = useDispatch()
   useEffect(() => {
-    let temp = [];
-    const findAllTweets = async () => {
-      const alltweets = await axios.get(
-        `${process.env.NEXT_PUBLIC_HOST}/api/feed`
-      );
-      for (let i = alltweets.data.length - 1; i >= 0; i--) {
-        temp.push(
-          <Post
-            _id={alltweets.data[i]._id}
-            name={alltweets.data[i].name}
-            likes={alltweets.data[i].likes}
-            comments={alltweets.data[i].comments.length}
-            content={alltweets.data[i].tweet}
-            username={alltweets.data[i].email.split("@")[0]}
-            time={alltweets.data[i].createdAt}
-            isComment={false}
-          />
-        );
+    dispatch(getAllTweets()) 
+  },[])
+
+  const alltweets = useSelector(state => state.tweetsSlice.tweets);
+
+  console.log('alltweets', alltweets)
+  useEffect(()=>{
+    let temp = []
+    for(let i=alltweets.length-1; i>=0;i--) {
+      let imageBuffer;
+      if(Object.keys(alltweets[i].image).length !== 0) {
+        imageBuffer = alltweets[i].image.data
       }
-      setContent([...temp]);
-    };
-    findAllTweets();
-  }, []);
+      temp.push(
+        <Post
+          key={alltweets[i]._id}
+          _id={alltweets[i]._id}
+          name={alltweets[i].name}
+          likes={alltweets[i].likes}
+          comments={alltweets[i].comments.length}
+          content={alltweets[i].tweet}
+          username={alltweets[i].email.split("@")[0]}
+          time={alltweets[i].createdAt}
+          isComment={false}
+          image={imageBuffer}
+        />
+      )
+    }
+    setContent([...temp]);
+  },[alltweets])
+  
 
   const [active, setActiveState] = useState(true);
   const [Hamishidden, setHamIsHidden] = useState(false);

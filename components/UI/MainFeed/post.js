@@ -9,11 +9,21 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
 import Modal from "../Modal/Modal";
+import { useDispatch } from "react-redux";
+import { tweetActions } from "@/store/tweetSlice";
 
 const Post = (props) => {
   const { data: session } = useSession();
+
+  const dispatch = useDispatch();
+  const base64String = btoa(String.fromCharCode(...new Uint8Array(props.image)));
+
   const [bookMark, setBookMark] = useState(false);
+  const [likeButton, setLikeButton] = useState(props.likes.length > 0 && session &&
+    props.likes.find((ele) => ele === session.user.email) ? true : false);
+  
   const [likeCount, setLikeCount] = useState(props.likes.length);
+  
   useEffect(() => {
     const run = async () => {
       const userData = await axios.post(
@@ -33,18 +43,6 @@ const Post = (props) => {
     };
     if (session) run();
   }, [props._id, session]);
-
-  let isLiked = false;
-
-  if (
-    props.likes.length > 0 &&
-    session &&
-    props.likes.find((ele) => ele === session.user.email)
-  ) {
-    isLiked = true;
-  }
-
-  const [likeButton, setLikeButton] = useState(isLiked);
 
   const CheckSigned = () => {
     if (!session) {
@@ -86,6 +84,8 @@ const Post = (props) => {
 
   const addToLikeHandler = async () => {
     if (CheckSigned()) {
+      setLikeButton(true);
+      setLikeCount(likeCount + 1);
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_HOST}/api/addLike`,
         {
@@ -93,9 +93,11 @@ const Post = (props) => {
           email: session.user.email,
         }
       );
-      if (response.data.message === "Successful") {
-        setLikeButton(true);
-        setLikeCount(likeCount + 1);
+      if (response.data.message !== "Successful") {
+        setLikeButton(false);
+        setLikeCount(likeCount - 1);
+      } else {
+        dispatch(tweetActions.addLike({ tweetId: props._id, email: session.user.email}))
       }
     }
   };
@@ -128,6 +130,8 @@ const Post = (props) => {
 
   const removeLikeHandler = async () => {
     if (CheckSigned()) {
+      setLikeButton(false);
+      setLikeCount(likeCount - 1);
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_HOST}/api/removeLike`,
         {
@@ -135,9 +139,11 @@ const Post = (props) => {
           email: session.user.email,
         }
       );
-      if (response.data.message === "Successful") {
-        setLikeButton(false);
-        setLikeCount(likeCount - 1);
+      if (response.data.message !== "Successful") {
+        setLikeButton(true);
+        setLikeCount(likeCount + 1);
+      } else {
+        dispatch(tweetActions.removeLike({ tweetId: props._id, email: session.user.email}))
       }
     }
   };
@@ -169,6 +175,12 @@ const Post = (props) => {
             )}
           </div>
           <div className="px-2 pt-1">{props.content}</div>
+         {props.image && <img style={{ 
+              maxWidth: '100%',
+              borderRadius: '15px',
+              border: '1px solid white',
+              marginTop: '15px'
+         }} src={`data:image/png;base64,${base64String}`} alt=""/>}
           <div className="flex justify-between px-2 pt-2">
             <div>
               <FaRegComment

@@ -31,9 +31,11 @@ const addComment = async (req, res) => {
       comment: req.body.comment,
     });
 
-    await tweetIndb.save();
+    const updatedTweet = await tweetIndb.save();
 
-    res.json({ message: "Successful" });
+    const addedComment = updatedTweet.comments[updatedTweet.comments.length - 1];
+
+    res.json({ message: "Successful", comment: addedComment });
   } else {
     return res.status(405).json({ message: "Invalid req type" });
   }
