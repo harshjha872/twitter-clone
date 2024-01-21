@@ -18,6 +18,7 @@ const TweetSchema = new mongoose.Schema(
         replyTo: { type: String, required: true },
         comment: String,
         likes: [String],
+        profile_picture: String,
       },
     ],
     shareLink: { type: String, required: true },

@@ -152,8 +152,32 @@ const Post = (props) => {
     <>
       {isModal && <Modal details={props} removeModal={removeModal} />}
       <div className="flex py-2 pl-2 pr-4 w-full h-max border-b-2 boorder-r-2 border-neutral-900">
-        <div className="w-fit h-max p-2">
-          <div className="w-12 h-12 rounded-full bg-neutral-700"></div>
+        <div className="w-fit h-max" style={{ paddingRight: '5px'}}>
+        {props.profile_picture ? (
+          <img
+            src={props.profile_picture}
+            alt="Avatar"
+            style={{
+              verticalAlign: "middle",
+              width: "45px",
+              height: "45px",
+              borderRadius: "50%",
+              margin: "5px",
+            }}
+          ></img>
+        ) : (
+          <img
+            src={'https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png'}
+            alt="Avatar"
+            style={{
+              verticalAlign: "middle",
+              width: "45px",
+              height: "45px",
+              borderRadius: "50%",
+              margin: "5px",
+            }}
+          ></img>
+        )}
         </div>
         <div className="flex flex-col w-full">
           <div className="flex justify-between">
@@ -179,7 +203,8 @@ const Post = (props) => {
               maxWidth: '100%',
               borderRadius: '15px',
               border: '1px solid white',
-              marginTop: '15px'
+              marginTop: '15px',
+              marginLeft: '7px'
          }} src={`data:image/png;base64,${base64String}`} alt=""/>}
           <div className="flex justify-between px-2 pt-2">
             <div>

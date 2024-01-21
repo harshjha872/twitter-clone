@@ -29,7 +29,8 @@ const getTweet = async (req, res) => {
       shareLink: singleTweet.shareLink,
       comments: singleTweet.comments,
       _id: singleTweet._id,
-      image: singleTweet.image
+      image: singleTweet.image,
+      profile_picture: user.profile_picture
     };
     responseData.push(Tweetinfo);
 

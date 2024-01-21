@@ -178,7 +178,31 @@ const SingleTweet = (props) => {
       <div className="flex flex-col py-2 pl-2 pr-4 w-full h-max border-b-2 border-neutral-900">
         <div className="flex py-2">
           <div className="w-fit h-max p-2">
-            <div className="w-12 h-12 rounded-full bg-neutral-700"></div>
+          {props.profile_picture ? (
+          <img
+            src={props.profile_picture}
+            alt="Avatar"
+            style={{
+              verticalAlign: "middle",
+              width: "50px",
+              height: "50px",
+              borderRadius: "50%",
+              margin: "5px",
+            }}
+          ></img>
+        ) : (
+          <img
+            src={'https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png'}
+            alt="Avatar"
+            style={{
+              verticalAlign: "middle",
+              width: "50px",
+              height: "50px",
+              borderRadius: "50%",
+              margin: "5px",
+            }}
+          ></img>
+        )}
           </div>
           <div className="flex justify-between h-16 py-2">
             <div className="px-2">

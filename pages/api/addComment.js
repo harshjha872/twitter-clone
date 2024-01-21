@@ -25,10 +25,11 @@ const addComment = async (req, res) => {
     const replyToUserEmail = await User.findById(tweetIndb.user);
 
     tweetIndb.comments.push({
-      userEmail: req.body.userLoggedIn.user.email,
-      name: req.body.userLoggedIn.user.name,
+      userEmail: userLoggedIn.email,
+      name: userLoggedIn.name,
       replyTo: replyToUserEmail.email,
       comment: req.body.comment,
+      profile_picture: userLoggedIn.profile_picture
     });
 
     const updatedTweet = await tweetIndb.save();

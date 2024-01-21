@@ -76,7 +76,8 @@ router
             image: image ? uploadedImage.data : {},
             _id: savedTweet._id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            profile_picture: user.profile_picture
           },
           image: image 
         });

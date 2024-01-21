@@ -32,6 +32,7 @@ const getbookmarks = async (req, res) => {
         shareLink: tweetinDb.shareLink,
         comments: tweetinDb.comments,
         _id: tweetinDb._id,
+        image: tweetinDb.image
       };
       responseData.push(TweetInfo);
     }

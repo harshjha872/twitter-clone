@@ -29,7 +29,7 @@ const Signin = ({ providers }) => {
 
     if (result.ok) {
       router.push(result.url);
-    }
+    } 
 
     // if (!result.error) {
     //   // set some auth state

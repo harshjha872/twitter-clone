@@ -13,8 +13,11 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import Router from "next/router";
+import { tweetActions } from "@/store/tweetSlice";
+import { useDispatch } from "react-redux";
 
 const SingleComment = (props) => {
+  const dispatch = useDispatch();
   const { data: session } = useSession();
   const [likeCount, setLikeCount] = useState(props.comments.likes.length);
   const [isDelete, setDelete] = useState(false);
@@ -51,6 +54,8 @@ const SingleComment = (props) => {
   };
   const addLikeToCommandHandler = async () => {
     if (CheckSigned()) {
+      setLikeButton(true);
+        setLikeCount(likeCount + 1);
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_HOST}/api/addLikeToComment`,
         {
@@ -58,15 +63,19 @@ const SingleComment = (props) => {
           email: session.user.email,
         }
       );
-      if (response.data.message === "Successful") {
-        setLikeButton(true);
-        setLikeCount(likeCount + 1);
+      if (response.data.message !== "Successful") {
+        setLikeButton(false);
+        setLikeCount(likeCount - 1);
+      } else {
+        dispatch(tweetActions.addLikeToComment({ tweetId: props.tweet, email: session.user.email, commentId: props.comments._id }))
       }
     }
   };
 
   const removeLikeFromCommentHandler = async () => {
     if (CheckSigned()) {
+      setLikeButton(false)
+      setLikeCount(likeCount - 1)
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_HOST}/api/removeLikeFromComment`,
         {
@@ -74,9 +83,11 @@ const SingleComment = (props) => {
           email: session.user.email,
         }
       );
-      if (response.data.message === "Successful") {
-        setLikeButton(false);
-        setLikeCount(likeCount - 1);
+      if (response.data.message !== "Successful") {
+        setLikeButton(true);
+        setLikeCount(likeCount + 1);
+      } else {
+        dispatch(tweetActions.removeLikeFromComment({ tweetId: props.tweet, email: session.user.email, commentId: props.comments._id }))
       }
     }
   };
@@ -91,15 +102,40 @@ const SingleComment = (props) => {
         }
       );
       if (res.statusText === "OK") {
-        Router.push("/");
+        dispatch(tweetActions.deleteComment({ tweetId: props.tweet, email: session.user.email, commentId: props.comments._id }))
+        // Router.push("/");
       }
     }
   };
 
   return (
     <div className="flex py-2 pl-2 pr-4 w-full h-max border-b-2 border-neutral-900">
-      <div className="w-fit h-max p-2">
-        <div className="w-12 h-12 rounded-full bg-neutral-700"></div>
+      <div className="w-fit h-max" style={{ paddingRight: '5px'}}>
+      {props.comments.profile_picture ? (
+          <img
+            src={props.comments.profile_picture}
+            alt="Avatar"
+            style={{
+              verticalAlign: "middle",
+              width: "45px",
+              height: "45px",
+              borderRadius: "50%",
+              margin: "5px",
+            }}
+          ></img>
+        ) : (
+          <img
+            src={'https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png'}
+            alt="Avatar"
+            style={{
+              verticalAlign: "middle",
+              width: "45px",
+              height: "45px",
+              borderRadius: "50%",
+              margin: "5px",
+            }}
+          ></img>
+        )}
       </div>
       <div className="flex flex-col w-full">
         <div className="flex justify-between">

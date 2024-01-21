@@ -23,7 +23,6 @@ const addUser = async (req, res) => {
         name: req.body.name,
         email: req.body.Email,
         password: HashedPassword,
-        Watchlist: req.body.Watchlist,
       });
 
       await newuser.save();

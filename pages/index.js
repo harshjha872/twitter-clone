@@ -11,18 +11,21 @@ import PhoneSidebar from "@/components/UI/SideBar/PhoneSidebar";
 import { useEffect } from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import {getAllTweets} from "../store/tweetSlice";
+import { getAllTweets } from "../store/tweetSlice";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
   const [content, setContent] = useState([]);
   const dispatch = useDispatch()
+  const { data: session, status } = useSession();
+
+  console.log(session, status)
   useEffect(() => {
     dispatch(getAllTweets()) 
   },[])
 
   const alltweets = useSelector(state => state.tweetsSlice.tweets);
 
-  console.log('alltweets', alltweets)
   useEffect(()=>{
     let temp = []
     for(let i=alltweets.length-1; i>=0;i--) {
@@ -42,6 +45,7 @@ export default function Home() {
           time={alltweets[i].createdAt}
           isComment={false}
           image={imageBuffer}
+          profile_picture={alltweets[i].profile_picture}
         />
       )
     }

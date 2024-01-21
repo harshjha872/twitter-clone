@@ -20,8 +20,6 @@ export default function Home() {
   const router = useRouter();
   const { slug } = router.query;
   const currentTweet = useSelector(state => state.tweetsSlice.tweets.find(tweet => tweet._id === slug));
-  
-  console.log("currentTweet", currentTweet);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -49,6 +47,7 @@ export default function Home() {
           email={tweet.data[0].email}
           time={tweet.data[0].createdAt}
           image={imageBuffer}
+          profile_picture={tweet.data[0].profile_picture}
         />
       );
 
@@ -75,6 +74,7 @@ export default function Home() {
         email={currentTweet.email}
         time={currentTweet.createdAt}
         image={currentTweet.image.data}
+        profile_picture={currentTweet.profile_picture}
       />)
       for (let i = 0; i < currentTweet.comments.length; i++) {
         commentsArr.push(
@@ -87,6 +87,7 @@ export default function Home() {
 
   const [active, setActiveState] = useState(true);
   const [Hamishidden, setHamIsHidden] = useState(false);
+
   let HamClass = `min-[500px]:hidden z-20 ease-in-out transition duration-200 bg-neutral-900 flex space-y-2 flex-col h-screen w-20 w-72 fixed left-0 top-0 border-r-2 border-neutral-900 items-center items-start py-4 ${
     Hamishidden ? "translate-x-0" : "-translate-x-72"
   }`;

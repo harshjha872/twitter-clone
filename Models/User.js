@@ -4,8 +4,9 @@ const usersSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String },
     bio: { type: String, required: false },
+    profile_picture: { type: String, required: false },
     bookmarks: [
       {
         type: Schema.Types.ObjectId,

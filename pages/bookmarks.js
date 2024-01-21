@@ -8,7 +8,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import Overlay from "@/components/UI/SideBar/Overlay";
 import PhoneSidebar from "@/components/UI/SideBar/PhoneSidebar";
 import { useEffect } from "react";
-import axios from "axios";
+import axios, { all } from "axios";
 import { useSession } from "next-auth/react";
 import Router from "next/router";
 
@@ -31,8 +31,13 @@ export default function Bookmark() {
       );
 
       for (let i = allbookmarks.data.length - 1; i >= 0; i--) {
+        let imageBuffer;
+        if (Object.keys(allbookmarks.data[i].image).length !== 0) {
+          imageBuffer = allbookmarks.data[i].image.data.data;
+        }
         temp.push(
           <Post
+            key={allbookmarks.data[i]._id}
             _id={allbookmarks.data[i]._id}
             name={allbookmarks.data[i].name}
             likes={allbookmarks.data[i].likes}
@@ -41,6 +46,7 @@ export default function Bookmark() {
             username={allbookmarks.data[i].email.split("@")[0]}
             time={allbookmarks.data[i].createdAt}
             isComment={false}
+            image={imageBuffer}
           />
         );
       }

@@ -78,7 +78,31 @@ const Modal = (props) => {
           </div>
           <div className="h-fit w-full px-[9px] flex relative">
             <div className="w-fit h-max p-2 z-40">
-              <div className="w-12 h-12 rounded-full bg-neutral-700"></div>
+            {props.details.profile_picture ? (
+          <img
+            src={props.details.profile_picture}
+            alt="Avatar"
+            style={{
+              verticalAlign: "middle",
+              width: "45px",
+              height: "45px",
+              borderRadius: "50%",
+              margin: "5px",
+            }}
+          ></img>
+        ) : (
+          <img
+            src={'https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png'}
+            alt="Avatar"
+            style={{
+              verticalAlign: "middle",
+              width: "45px",
+              height: "45px",
+              borderRadius: "50%",
+              margin: "5px",
+            }}
+          ></img>
+        )}
             </div>
             <div className="font-semibold pr-2 pt-2">{props.details.name} </div>
             <div className="font-medium text-neutral-600 pr-2 pt-2">
@@ -100,7 +124,31 @@ const Modal = (props) => {
           {/* compose */}
           <div className="flex px-[9px] py-2">
             <div className="w-fit h-max p-2 z-40">
-              <div className="w-12 h-12 rounded-full bg-neutral-700"></div>
+            {session.user.image ? (
+          <img
+            src={session.user.image}
+            alt="Avatar"
+            style={{
+              verticalAlign: "middle",
+              width: "45px",
+              height: "45px",
+              borderRadius: "50%",
+              margin: "5px",
+            }}
+          ></img>
+        ) : (
+          <img
+            src={'https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png'}
+            alt="Avatar"
+            style={{
+              verticalAlign: "middle",
+              width: "45px",
+              height: "45px",
+              borderRadius: "50%",
+              margin: "5px",
+            }}
+          ></img>
+        )}
             </div>
             <form onSubmit={addCommentHandler} className="flex flex-col w-full">
               <textarea

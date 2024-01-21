@@ -35,6 +35,38 @@ const tweetSlice = createSlice({
         }
         return tweet;
       })
+    },
+    addLikeToComment: (state, action) => {
+      state.tweets = state.tweets.map(tweet => {
+        if(tweet._id === action.payload.tweetId) {
+          tweet.comments.forEach(comment => {
+            if(comment._id === action.payload.commentId) {
+              comment.likes.push(action.payload.email)
+            }
+          })
+        }
+        return tweet;
+      })
+    },
+    removeLikeFromComment: (state, action) => {
+      state.tweets = state.tweets.map(tweet => {
+        if(tweet._id === action.payload.tweetId) {
+          tweet.comments.forEach(comment => {
+            if(comment._id === action.payload.commentId) {
+              comment.likes = comment.likes.filter(email => email !== action.payload.email)
+            }
+          })
+        }
+        return tweet;
+      })
+    },
+    deleteComment: (state, action) => {
+      state.tweets = state.tweets.map(tweet => {
+        if(tweet._id === action.payload.tweetId) {
+          tweet.comments = tweet.comments.filter(comment => comment._id !== action.payload.commentId)
+        }
+        return tweet;
+      })
     }
   },
 });
@@ -46,8 +78,8 @@ export default tweetSlice;
 export const getAllTweets = () => {
   return async (dispatch) => {
     const res = await axios.get(`${process.env.NEXT_PUBLIC_HOST}/api/feed`);
-
-    if (res.status === 200 && res.statusText === "OK") {
+    
+    if (res.statusText === "OK") {
       console.log('tweets', res.data)
       const allTweetsUpdated = res.data.map(tweet => {
         return {...tweet, image: Object.keys(tweet.image).length === 0 ? {} : tweet.image.data}
