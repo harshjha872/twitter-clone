@@ -80,7 +80,6 @@ export const getAllTweets = () => {
     const res = await axios.get(`${process.env.NEXT_PUBLIC_HOST}/api/feed`);
     console.log(res)
     if (res.data) {
-      console.log('tweets', res.data)
       const allTweetsUpdated = res.data.map(tweet => {
         return {...tweet, image: Object.keys(tweet.image).length === 0 ? {} : tweet.image.data}
       })

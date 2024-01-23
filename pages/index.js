@@ -13,25 +13,24 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllTweets } from "../store/tweetSlice";
 import { useSession } from "next-auth/react";
+import styles from "@/components/UI/Loader/loading.module.css";
 
 export default function Home() {
   const [content, setContent] = useState([]);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { data: session, status } = useSession();
-
-  console.log(session, status)
   useEffect(() => {
-    dispatch(getAllTweets()) 
-  },[])
+    dispatch(getAllTweets());
+  }, []);
 
-  const alltweets = useSelector(state => state.tweetsSlice.tweets);
+  const alltweets = useSelector((state) => state.tweetsSlice.tweets);
 
-  useEffect(()=>{
-    let temp = []
-    for(let i=alltweets.length-1; i>=0;i--) {
+  useEffect(() => {
+    let temp = [];
+    for (let i = alltweets.length - 1; i >= 0; i--) {
       let imageBuffer;
-      if(Object.keys(alltweets[i].image).length !== 0) {
-        imageBuffer = alltweets[i].image.data
+      if (Object.keys(alltweets[i].image).length !== 0) {
+        imageBuffer = alltweets[i].image.data;
       }
       temp.push(
         <Post
@@ -47,11 +46,10 @@ export default function Home() {
           image={imageBuffer}
           profile_picture={alltweets[i].profile_picture}
         />
-      )
+      );
     }
     setContent([...temp]);
-  },[alltweets])
-  
+  }, [alltweets]);
 
   const [active, setActiveState] = useState(true);
   const [Hamishidden, setHamIsHidden] = useState(false);
@@ -119,7 +117,25 @@ export default function Home() {
             </a>
           </div>
           <ComposeTweet />
-          {content}
+          {content.length !== 0 ? (
+            content
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "300px",
+              }}
+            >
+              <div className={styles.IdsEllipsis}>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          )}
         </div>
         <Sidefeed />
       </main>

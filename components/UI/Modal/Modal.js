@@ -77,7 +77,7 @@ const Modal = (props) => {
             </div>
           </div>
           <div className="h-fit w-full px-[9px] flex relative">
-            <div className="w-fit h-max p-2 z-40">
+            <div className="w-fit h-max p-2 z-40" style={{ paddingLeft: '6px'}}>
             {props.details.profile_picture ? (
           <img
             src={props.details.profile_picture}
@@ -123,7 +123,7 @@ const Modal = (props) => {
           </div>
           {/* compose */}
           <div className="flex px-[9px] py-2">
-            <div className="w-fit h-max p-2 z-40">
+            <div className="w-fit h-max p-2 z-40" style={{ paddingLeft: '6px'}}>
             {session.user.image ? (
           <img
             src={session.user.image}
@@ -159,11 +159,11 @@ const Modal = (props) => {
                 className="resize-none focus:outline-none focus:ring-0  block p-2.5 w-full text-lg font-semibold text-neutral-100 bg-black rounded-lg"
                 placeholder="What's happening?"
               ></textarea>
-              <div className="flex h-fit py-4 px-4 justify-between items-center">
-                <FiImage
+              <div className="flex h-fit py-4 px-4 justify-end items-center">
+                {/* <FiImage
                   size={18}
                   className="text-sky-500 cursor-pointer hover:scale-105"
-                />
+                /> */}
                 <button
                   type="submit"
                   className="bg-sky-600 rounded-2xl w-20 h-8 font-semibold px-2 text-center flex justify-center items-center"

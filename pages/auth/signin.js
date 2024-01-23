@@ -5,6 +5,8 @@ import { BsTwitter } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Signin = ({ providers }) => {
   const router = useRouter();
@@ -29,7 +31,18 @@ const Signin = ({ providers }) => {
 
     if (result.ok) {
       router.push(result.url);
-    } 
+    } else {
+      toast.error(result.error, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
+    }
 
     // if (!result.error) {
     //   // set some auth state
@@ -56,6 +69,18 @@ const Signin = ({ providers }) => {
   };
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <div
         className="flex justify-center
  w-full py-6 text-sky-500 fixed top-0 bg-neutral-900"

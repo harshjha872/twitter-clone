@@ -6,6 +6,9 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { UseSelector, useDispatch } from "react-redux";
 import { tweetActions } from "@/store/tweetSlice";
+import {
+  AiOutlineDelete,
+} from "react-icons/ai";
 
 const ComposeTweet = () => {
   const { data: session, status } = useSession();
@@ -38,7 +41,6 @@ const ComposeTweet = () => {
         formData
       );
 
-      console.log(response);
       if (response.data.message === "Successfull") {
         dispatch(tweetActions.addTweets(response.data.tweetDetails));
       }
@@ -64,8 +66,13 @@ const ComposeTweet = () => {
     }
   };
 
+  const onDeleteFromCompose = (e) => {
+    setImage(null);
+    setDisplayImage(null);
+  }
+
   return (
-    <div className="hidden min-[500px]:flex p-2 border-b-2 border-neutral-900">
+    <div className="flex p-2 pr-4 border-b-2 border-neutral-900">
       <div className="w-fit h-max" style={{ paddingRight: '5px'}}>
         {session && session.user.image ? (
           <img
@@ -116,12 +123,20 @@ const ComposeTweet = () => {
         )}
 
         <div className="flex h-fit py-4 px-4 justify-between items-center">
+          <div className="flex space-x-4 items-center">
           <label htmlFor="fileInput">
             <FiImage
               size={18}
               className="text-sky-500 cursor-pointer hover:scale-105"
             />
           </label>
+          {image &&
+          <AiOutlineDelete
+          onClick={onDeleteFromCompose}
+                  size={20}
+                  className="text-sky-500 hover:scale-110 "
+                />}
+          </div>
           <input
             type="file"
             accept="image/*"
