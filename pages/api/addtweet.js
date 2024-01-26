@@ -4,6 +4,8 @@ import User from "@/Models/User";
 import mongoose from "mongoose";
 import Tweet from "@/Models/Tweet";
 import fs from 'fs'
+import path from 'path';
+import os from 'os';
 
 const router = createRouter();
 
@@ -13,10 +15,11 @@ export const config = {
     }
 }
 
+
 const upload = multer({
     storage:multer.diskStorage({
         destination: function(req, file, cb) {
-            cb(null, "uploads/");
+            cb(null, fs.mkdtempSync(path.join(os.tmpdir(), 'uploads')));
         },
         filename: function(req, file, cb) {
             cb(null, new Date().getTime() + "-" + file.originalname)
@@ -30,6 +33,7 @@ router
     if (!req.body) {
         return res.status(401).json({ message: "No Data in Req" });
       }
+
       const { tweet, email } = req.body;
 
       const image = req.file
@@ -47,7 +51,7 @@ router
 
         if (image) {
           uploadedImage = {
-            data: fs.readFileSync('uploads/' + req.file.filename),
+            data: fs.readFileSync(req.file.path),
             contentType: image.mimetype,
           }
         } 
@@ -64,6 +68,8 @@ router
   
         user.tweets.push(newtweet);
         await user.save();
+
+        fs.unlinkSync(req.file.path);
   
         return res.status(200).json({ 
           message: "Successfull", 

@@ -16,7 +16,9 @@ const Post = (props) => {
   const { data: session } = useSession();
 
   const dispatch = useDispatch();
-  const base64String = btoa(String.fromCharCode(...new Uint8Array(props.image)));
+  
+  let base64String
+  if(props.image) base64String = Buffer.from(props.image, 'binary').toString('base64');
 
   const [bookMark, setBookMark] = useState(false);
   const [likeButton, setLikeButton] = useState(props.likes.length > 0 && session &&

@@ -7,11 +7,12 @@ import { useSession } from "next-auth/react";
 import Router from "next/router";
 import { tweetActions } from "@/store/tweetSlice";
 import { useDispatch } from "react-redux";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ComfirmDelModal = (props) => {
   const dispatch = useDispatch();
   const { data: session } = useSession();
-  const [comment, setComment] = useState("");
 
   const CloseModal = () => {
     props.removeDelModal();
@@ -35,8 +36,19 @@ const ComfirmDelModal = (props) => {
                 email: session.user.email,
               }
             );
-            if (res.statusText === "OK") {
+            if (res.data.message === "Tweet deleted") {
                 Router.push("/");
+            } else {
+                toast.error('something went wrong!', {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    });
             }
         } else if(props.deltype === 'comment') {
             const res = await axios.post(
@@ -46,9 +58,20 @@ const ComfirmDelModal = (props) => {
                   _id: props.comment_id,
                 }
               );
-              if (res.statusText === "OK") {
+              if (res.data.message === "successfully deleted comment") {
                 dispatch(tweetActions.deleteComment({ tweetId: props.post_id, email: session.user.email, commentId: props.comment_id }))
                 // Router.push("/");
+              } else {
+                toast.error('something went wrong!', {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    });
               }
         }
         props.removeDelModal();
@@ -57,6 +80,18 @@ const ComfirmDelModal = (props) => {
 
   return (
     <>
+    <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <div
         onClick={CloseModal}
         className="h-screen w-full fixed inset-0 z-10 bg-[#000000fa] bg-opacity-50 overscroll-none opacity-50"

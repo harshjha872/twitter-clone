@@ -19,9 +19,9 @@ import ComfirmDelModal from "../Modal/ConfirmDelModal";
 
 const SingleTweet = (props) => {
   const dispatch = useDispatch();
-  const base64String = btoa(
-    String.fromCharCode(...new Uint8Array(props.image))
-  );
+  let base64String
+  if(props.image) base64String = Buffer.from(props.image, 'binary').toString('base64');
+
   const { data: session } = useSession();
   const [bookMark, setBookMark] = useState(false);
   const [isDelete, setDelete] = useState(false);

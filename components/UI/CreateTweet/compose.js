@@ -25,7 +25,7 @@ const ComposeTweet = () => {
 
   const tweetSubmit = async (e) => {
     e.preventDefault();
-
+    CheckSigned();
     if (tweet === "" && !image) {
       console.log("No tweet or image found");
       return;
@@ -146,7 +146,6 @@ const ComposeTweet = () => {
           ></input>
           <button
             type="submit"
-            onClick={CheckSigned}
             className="bg-sky-600 rounded-2xl w-20 h-8 font-semibold px-2 text-center flex justify-center items-center"
           >
             Tweet
