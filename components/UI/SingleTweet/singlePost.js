@@ -16,6 +16,7 @@ import Modal from "../Modal/Modal";
 import { tweetActions } from "@/store/tweetSlice";
 import { useDispatch } from "react-redux";
 import ComfirmDelModal from "../Modal/ConfirmDelModal";
+import moment from "moment";
 
 const SingleTweet = (props) => {
   const dispatch = useDispatch();
@@ -79,24 +80,11 @@ const SingleTweet = (props) => {
     }
     return true;
   };
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "June",
-    "July",
-    "Aug",
-    "Sept",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-  const currentTime = props.time.split("T")[0];
-  const time = currentTime.split("-");
-  const day = time[2];
-  const month = months[Number(time[1]) - 1];
+  
+  const dateTime = moment.utc(props.time).add(5, 'hours').add(30, 'minutes')
+  const time = dateTime.format("h:mm A");
+  const month = dateTime.format("MMM");
+  const date = dateTime.format("D");
 
   const addtobookmark = async () => {
     if (CheckSigned()) {
@@ -253,7 +241,7 @@ const SingleTweet = (props) => {
             />
           )}
           <span className="font-medium text-neutral-600 px-2 pb-2 border-b-2 border-neutral-900">
-            1:40 PM · {month} {day}
+            {time} · {date} {month}
           </span>
           <div className="flex justify-between px-8 pt-3 pb-1">
             <div>

@@ -11,12 +11,13 @@ import Link from "next/link";
 import Modal from "../Modal/Modal";
 import { useDispatch } from "react-redux";
 import { tweetActions } from "@/store/tweetSlice";
+import moment from "moment";
 
 const Post = (props) => {
   const { data: session } = useSession();
 
   const dispatch = useDispatch();
-  
+
   let base64String
   if(props.image) base64String = Buffer.from(props.image, 'binary').toString('base64');
 
@@ -54,26 +55,10 @@ const Post = (props) => {
     return true;
   };
 
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "June",
-    "July",
-    "Aug",
-    "Sept",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-
-  const currentTime = props.time.split("T")[0];
-  const time = currentTime.split("-");
-  const day = time[2];
-  const month = months[Number(time[1]) - 1];
-
+  const dateTime = moment.utc(props.time).add(5, 'hours').add(30, 'minutes')
+  const month = dateTime.format("MMM");
+  const date = dateTime.format("D");
+  
   const [isModal, setModal] = useState(false);
 
   const addCommentHandler = () => {
@@ -189,7 +174,7 @@ const Post = (props) => {
                 @{props.username} ·
               </span>
               <span className="font-medium text-neutral-600 px-1">
-                {month} {day}
+                {month} {date}
               </span>
             </div>
             {!props.isComment && (
