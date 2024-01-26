@@ -69,7 +69,7 @@ router
         user.tweets.push(newtweet);
         await user.save();
 
-        fs.unlinkSync(req.file.path);
+        if(image) fs.unlinkSync(req.file.path);
   
         return res.status(200).json({ 
           message: "Successfull", 
